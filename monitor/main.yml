@@ -1,0 +1,13 @@
+---
+- hosts: collectd
+  user: root
+  roles:
+    - collectd
+
+- hosts: monitor
+  user: root
+  roles:
+    - common
+    - grafana
+    - graphite
+    - nginx

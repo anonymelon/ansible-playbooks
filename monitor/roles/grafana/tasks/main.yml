@@ -1,0 +1,5 @@
+- stat: path=/opt/grafana
+  register: check_grafana_result
+
+- include: grafana_install.yml
+  when: check_grafana_result.stat.exists==false

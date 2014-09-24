@@ -1,0 +1,35 @@
+# this install may blocked by network, so make sure all of this packages installed manually
+- name: install graphite
+  pip: name={{ item }}
+  with_items:
+    - daemonize
+    - django-tagging
+    - tagging
+    - whisper
+    - carbon
+    - graphite-web
+  ignore_errors: yes
+
+- name: copy graphite config
+  template: src={{ item.src }} dest={{ item.dest }}
+  with_items:
+    - { src: 'carbon.conf', dest: '/opt/graphite/conf/' }
+    - { src: 'graphite.uwsgi', dest: '/opt/graphite/conf/' }
+    - { src: 'storage-schemas.conf', dest: '/opt/graphite/conf/' }
+    - { src: 'storage-aggregation.conf', dest: '/opt/graphite/conf/' }
+    - { src: 'local_settings.py', dest: '/opt/graphite/webapp/graphite/' }
+    - { src: 'util.py', dest: '/opt/graphite/lib/carbon/' }
+
+- name: change owner
+  file: path=/opt/graphite owner=www-data group=www-data recurse=yes
+
+- name: sync graphite db
+  shell: /usr/bin/python /opt/graphite/webapp/graphite/manage.py syncdb
+
+- name: start carbon cache server
+  shell: /usr/bin/python /opt/graphite/bin/carbon-cache.py start
+  ignore_errors: yes
+
+- name: start graphite server
+  shell: /usr/bin/nohup /usr/bin/python /opt/graphite/bin/run-graphite-devel-server.py --port 8080 /opt/graphite/ > /dev/null 2>&1 &
+  ignore_errors: yes

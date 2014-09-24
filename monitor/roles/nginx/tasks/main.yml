@@ -1,0 +1,12 @@
+- name: install nginx
+  apt: pkg=nginx state=present
+
+- name: remove default nginx conf
+  file: path=/etc/nginx/sites-enabled/default state=absent
+  delegate_to: "{{ monitor_host }}"
+
+- name: copy proxy conf
+  copy: src=graphit-grafana.conf dest=/etc/nginx/sites-enabled/graphit-grafana.conf
+
+- name: restart nginx
+  service: name=nginx state=restarted

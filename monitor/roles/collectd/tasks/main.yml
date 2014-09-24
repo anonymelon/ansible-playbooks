@@ -1,0 +1,16 @@
+- name: add collectd ppa
+  apt_repository: repo='deb http://ppa.launchpad.net/vbulax/collectd5/ubuntu precise main' state=present
+
+- name: install collectd
+  apt: pkg={{ item }} state=present force=yes
+  with_items:
+   - collectd
+   - collectd-core
+   - collectd-utils
+
+- name: copy collectd config
+  template: src=collectd.conf dest=/etc/collectd/collectd.conf backup=yes
+
+- name: restart collectd
+  service: name=collectd state=restarted
+  changed_when: False
