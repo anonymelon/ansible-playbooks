@@ -1,9 +1,11 @@
-# download timeout, change to local file copy
-# - name: download grafana
-#   get_url: url=http://grafanarel.s3.amazonaws.com/grafana-1.8.0-rc1.tar.gz dest=/opt/grafana.tar.gz
+---
 
-- name: copy grafana.tar.gz to remote
-  copy: src=grafana-1.8.0-rc1.tar.gz dest=/opt/grafana.tar.gz
+# download timeout, change to local file copy
+- name: download grafana
+  get_url: url=http://grafanarel.s3.amazonaws.com/grafana-1.8.0-rc1.tar.gz dest=/opt/grafana.tar.gz
+
+# - name: copy grafana.tar.gz to remote
+#   copy: src=grafana-1.8.0-rc1.tar.gz dest=/opt/grafana.tar.gz
 
 - name: extract archive
   command: chdir=/opt /bin/tar xvf /opt/grafana.tar.gz

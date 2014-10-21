@@ -11,3 +11,4 @@
     - grafana
     - graphite
     - nginx
+    - statsd

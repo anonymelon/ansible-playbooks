@@ -1,0 +1,7 @@
+---
+- name: clone statsd
+  git: repo=https://github.com/etsy/statsd.git
+       dest=/opt/statsd
+
+- name: copy config
+  template: src=config.js dest=/opt/statsd/config.js

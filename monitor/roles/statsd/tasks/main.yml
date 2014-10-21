@@ -1,0 +1,11 @@
+---
+
+- stat: path=/opt/statsd
+  register: check_statsd_result
+
+- include: statsd_install.yml
+  when: check_statsd_result.stat.exists==false
+
+- name: start statsd server
+  shell: chdir=/opt/statsd /usr/bin/nohup node stats.js config.js > /dev/statsd 2>&1 &
+  ignore_errors: yes
